@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+
+  db:
+    image: postgres
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web.dockerfile
+    labels:
+      - twenix
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    ports:
+      - '4000:4000'
+    depends_on:
+      - db
+    command:
+      - ./docker/entrypoint.sh
