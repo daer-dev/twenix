@@ -6,8 +6,14 @@ defmodule AppWeb.PostLive.PostComponent do
       <tr id="post-<%= @post.id %>">
         <td><%= @post.username %></td>
         <td><%= @post.body %></td>
-        <td><%= @post.likes_count %></td>
-        <td><%= @post.reposts_count %></td>
+        <td>
+          <%= @post.likes_count %>
+          <a href="#" phx-click="like" phx-target="<%= @myself %>">+</a>
+        </td>
+        <td>
+          <%= @post.reposts_count %>
+          <a href="#" phx-click="repost" phx-target="<%= @myself %>">+</a>
+        </td>
 
         <td>
           <span><%= live_redirect "Show", to: Routes.post_show_path(@socket, :show, @post) %></span>
@@ -16,5 +22,15 @@ defmodule AppWeb.PostLive.PostComponent do
         </td>
       </tr>
     """
+  end
+
+  def handle_event("like", _, socket) do
+    App.Timeline.increase_likes(socket.assigns.post)
+    {:noreply, socket}
+  end
+
+  def handle_event("repost", _, socket) do
+    App.Timeline.increase_reposts(socket.assigns.post)
+    {:noreply, socket}
   end
 end
