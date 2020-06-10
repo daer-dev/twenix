@@ -19,7 +19,7 @@
       <th colspan="3">Options</th>
     </tr>
   </thead>
-  <tbody id="posts">
+  <tbody id="posts" phx-update="prepend">
     <%= for post <- @posts do %>
       <%= live_component @socket, AppWeb.PostLive.PostComponent, id: post.id, post: post %>
     <% end %>
