@@ -1,4 +1,4 @@
-<h1>Listing Posts</h1>
+<h1>Timeline</h1>
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, AppWeb.PostLive.FormComponent,
@@ -14,26 +14,14 @@
     <tr>
       <th>Username</th>
       <th>Body</th>
-      <th>Likes count</th>
-      <th>Reposts count</th>
-
-      <th></th>
+      <th>Likes</th>
+      <th>Reposts</th>
+      <th colspan="3">Options</th>
     </tr>
   </thead>
   <tbody id="posts">
     <%= for post <- @posts do %>
-      <tr id="post-<%= post.id %>">
-        <td><%= post.username %></td>
-        <td><%= post.body %></td>
-        <td><%= post.likes_count %></td>
-        <td><%= post.reposts_count %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.post_show_path(@socket, :show, post) %></span>
-          <span><%= live_patch "Edit", to: Routes.post_index_path(@socket, :edit, post) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: post.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
+      <%= live_component @socket, AppWeb.PostLive.PostComponent, id: post.id, post: post %>
     <% end %>
   </tbody>
 </table>
